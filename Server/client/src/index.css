@@ -1,0 +1,17 @@
+/* index.css */
+
+/* Importing the Patrick Hand font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+/* Applying the Patrick Hand font to the body */
+body {
+  font-family: 'Patrick Hand';
+  margin: 0; /* Resetting default margin for body */
+  padding: 0; /* Resetting default padding for body */
+  /* Optionally, you can add other global styles here */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
