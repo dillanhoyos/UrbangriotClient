@@ -55,7 +55,7 @@ const QRScanner = () => {
 
   const videoConstraints = {
     width: isDesktop ? 700 : '100%', // Set a larger width for desktop and full width for mobile
-    height: isDesktop ? 500 : 'auto', // Set a larger height for desktop and maintain aspect ratio for mobile
+    height: isDesktop ? 350 : 'auto', // Set a larger height for desktop and maintain aspect ratio for mobile
     aspectRatio: 4 / 3,
     facingMode: 'environment',
   };
@@ -70,15 +70,16 @@ const QRScanner = () => {
       padding={2}
     >
       {/* Camera permission test button */}
-      <Button
+      {/* <Button
         variant="contained"
         color="primary"
         onClick={testCameraPermission}
         style={{ marginBottom: '1rem' }}
       >
-        Test Camera Permission
-      </Button>
+        Test Camera Permission */}
+      {/* </Button> */}
 
+      <Typography variant="h5" color="text.primary">Card Scanner</Typography>
       {/* Display camera access status */}
       {hasCameraPermission === true && (
         <Typography variant="body1" color="green">Camera access granted!</Typography>
@@ -92,7 +93,7 @@ const QRScanner = () => {
         <Box
           maxWidth={isDesktop ? '800px' : '100%'} // Set max width for desktop and full width for mobile
           width="100%"
-          marginBottom={2}
+          marginBottom={0}
         >
           <Webcam
             ref={webcamRef}

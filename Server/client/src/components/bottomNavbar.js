@@ -1,10 +1,10 @@
 // BottomNav.js
-import React from "react";
-import { BottomNavigation, BottomNavigationAction } from "@mui/material";
-import MapIcon from "@mui/icons-material/Map";
-import ScannerIcon from "@mui/icons-material/Scanner";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import MapIcon from '@mui/icons-material/Map';
+import ScannerIcon from '@mui/icons-material/Scanner';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Link } from 'react-router-dom';
 
 const BottomNav = () => {
   const [value, setValue] = React.useState(0);
@@ -17,8 +17,8 @@ const BottomNav = () => {
       }}
       showLabels
       sx={{
-        width: "100%",
-        position: "fixed",
+        width: '100%',
+        position: 'fixed',
         bottom: 0,
         left: 0, // Ensure it's aligned to the left edge
         zIndex: 1000,

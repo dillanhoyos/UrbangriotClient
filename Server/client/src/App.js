@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import QRScanner from "./components/Scanner"; // Import the QRScanner component
 import BottomNav from "./components/bottomNavbar";
 import ProfileHeader from "./components/profileHeader";
-import { Box, IconButton, Slider } from '@mui/material';
+import { Box } from '@mui/material';
 import Header from "./components/header";
 import Map from "./components/map";
 import Settings from "./components/settings";
@@ -35,26 +35,36 @@ function App() {
 
   return (
     <Router>
-      {/* Header component */}
-      <Header imageSrc={userdata.imagesrc} name={userdata.username} />
-      <ProfileHeader campsData={campsData} />
+      <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+        {/* Fixed Header and ProfileHeader */}
+        <Box sx={{ position: 'fixed', width: '100%', zIndex: 1, backgroundColor: '#ffffff' }}>
+          <Header imageSrc={userdata.imagesrc} name={userdata.username} />
+         
+        </Box>
 
-      <Routes>
-      <Route
-          path="/map"
-          element={
-            <Box sx={{ width: '100%', height: 'calc(100vh - 200px)' }}> {/* Adjust the height as needed */}
-              <ImageNavigation imageSrc={mapImage} />
-            </Box>
-          }
-        />
-        <Route path="/scan" element={<QRScanner onScan={handleScan} />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/" element={<QRScanner onScan={handleScan} />} />{" "}
-        {/* Default route */}
-      </Routes>
+        {/* Scrollable content area */}
+        <Box sx={{ flexGrow: 1, overflowY: 'auto', marginTop: '100px' }}> {/* Adjust marginTop based on the height of Header and ProfileHeader */}
+          <Routes>
+            <Route
+              path="/map"
+              element={
+                <Box sx={{ width: '100%', height: '100%' }}>
+                  <ProfileHeader campsData={campsData} />
+                  <ImageNavigation imageSrc={mapImage} />
+                </Box>
+              }
+            />
+            <Route path="/scan" element={<QRScanner onScan={handleScan} />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/" element={<QRScanner onScan={handleScan} />} /> {/* Default route */}
+          </Routes>
+        </Box>
 
-      <BottomNav />
+        {/* Bottom Navigation */}
+        <Box sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1, backgroundColor: '#ffffff' }}>
+          <BottomNav />
+        </Box>
+      </Box>
     </Router>
   );
 }

@@ -62,7 +62,7 @@ const ProfileHeader = ({ campsData }) => {
   };
 
   return (
-    <Box p={2} borderBottom={1} mb={2}>
+    <Box p={1} borderBottom={1} mb={2}>
       <Slider {...settings}>
         {campsData.map((camp) => (
           <Box key={camp.id} textAlign="center">
@@ -87,8 +87,8 @@ const ProfileHeader = ({ campsData }) => {
                   <Avatar
                     onClick={() => handleCampSelect(camp)}
                     sx={{
-                        width: { xs: 75, sm: 50, md: 60 }, // Adjust sizes based on screen breakpoints
-                        height: { xs: 75, sm: 50, md: 60 }, // Adjust sizes based on screen breakpoints
+                        width: { xs: 50, sm: 50, md: 55 }, // Adjust sizes based on screen breakpoints
+                        height: { xs: 50, sm: 50, md: 55 }, // Adjust sizes based on screen breakpoints
                         backgroundColor: "#fff",
                         color: activeCamp === camp ? theme.palette.text.primary : theme.palette.text.secondary,
                         border: activeCamp === camp ? "2px solid transparent" : theme.palette.text.primary,
