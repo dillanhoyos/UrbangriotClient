@@ -35,6 +35,12 @@ const Controls = styled(Box)(({ theme }) => ({
 
 const ImageNavigation = ({ imageSrc }) => {
   return (
+    <Box
+          sx={{
+            flexGrow: 1,
+            position: "relative",
+          }}
+        >
     <OuterContainer>
       <MapContainer>
         <TransformWrapper
@@ -69,6 +75,7 @@ const ImageNavigation = ({ imageSrc }) => {
         </TransformWrapper>
       </MapContainer>
     </OuterContainer>
+    </Box>
   );
 };
 

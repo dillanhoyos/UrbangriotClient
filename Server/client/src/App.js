@@ -1,109 +1,48 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import QRScanner from "./components/Scanner"; // Import the QRScanner component
-import BottomNav from "./components/bottomNavbar";
-import ProfileHeader from "./components/profileHeader";
-import { Box } from "@mui/material";
-import Header from "./components/header";
-import Map from "./components/map";
-import Settings from "./components/settings";
-import ImageNavigation from "./components/gamemap";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import AppRoutes from "./CompoundComponents/mainmenuroutes";
+import Onboarding from "./CompoundComponents/onboarding";
 
-const campsData = [
-  { id: "IC", name: "IdentityCamp", progress: 50 },
-  { id: "A", name: "AlphabetCamp", progress: 30 },
-  { id: "N", name: "NumbersCamp", progress: 80 },
-  { id: "PR", name: "ProverbsCamp", progress: 80 },
-  { id: "R", name: "RhythmCamp", progress: 80 },
-  { id: "V", name: "VocabularyCamp", progress: 80 },
-];
 const userdata = {
   imagesrc: "/user_images/image.png",
   username: "Dillan Hoyos",
 };
 
-const mapImage = "/camp_images/map.png";
-
 function App() {
   const [scannedUrl, setScannedUrl] = useState("");
+  const [onboardingComplete, setOnboardingComplete] = useState(false); // State to track onboarding completion
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const handleScan = (url) => {
     setScannedUrl(url);
-    // Optionally, perform any action with the scanned URL, e.g., redirect to it
     window.location.href = url;
   };
 
+  // Function to handle onboarding completion
+  const handleOnboardingComplete = (data) => {
+    // Perform any necessary actions with the onboarding data
+    console.log("Onboarding Data:", data);
+    setOnboardingComplete(true);
+    // Additional logic to save data or perform actions as needed
+  };
+
+  // Render onboarding if it's not complete, otherwise render main application routes
   return (
     <Router>
-      <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-        {/* Fixed Header and ProfileHeader */}
-        <Box
-          sx={{
-            position: "fixed",
-            width: "100%",
-            zIndex: 1,
-            backgroundColor: "#ffffff",
-          }}
-        >
-          <Header imageSrc={userdata.imagesrc} name={userdata.username} />
-        </Box>
-
-        {/* Scrollable content area */}
-        <Box sx={{ flexGrow: 1, overflowY: "auto", marginTop: "100px" }}>
-          {" "}
-          {/* Adjust marginTop based on the height of Header and ProfileHeader */}
-          <Routes>
-            <Route
-              path="/map"
-              element={
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "calc(100vh - 100px)", // Adjust based on your header height
-                    display: "flex",
-                    flexDirection: "column",
-                    overflow: "hidden",
-                  }}
-                >
-                  <ProfileHeader campsData={campsData} />
-                  <Box sx={{ flexGrow: 1, position: "relative" }}>
-                    <ImageNavigation imageSrc={mapImage} />
-                  </Box>
-                </Box>
-              }
-            />
-            <Route path="/scan" element={
-                <Box
-                sx={{
-                  width: "100%",
-                  height: "calc(100vh - 100px)", // Adjust based on your header height
-                  display: "flex",
-                  flexDirection: "column",
-                  overflow: "hidden",
-                  alignContent: "center"
-                }}
-              ><QRScanner onScan={handleScan} />
-              </Box>
-                } />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/" element={<QRScanner onScan={handleScan} />} />{" "}
-            {/* Default route */}
-          </Routes>
-        </Box>
-
-        {/* Bottom Navigation */}
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 0,
-            width: "100%",
-            zIndex: 1,
-            backgroundColor: "#ffffff",
-          }}
-        >
-          <BottomNav />
-        </Box>
-      </Box>
+      {!onboardingComplete ? (
+        <Onboarding onComplete={handleOnboardingComplete} />
+      ) : (
+        
+              <AppRoutes
+                isDesktop={isDesktop}
+                scannedUrl={scannedUrl}
+                handleScan={handleScan}
+                userdata={userdata}
+              />
+         
+      )}
     </Router>
   );
 }
