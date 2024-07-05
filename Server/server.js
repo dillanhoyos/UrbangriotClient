@@ -11,6 +11,7 @@ app.use(express.json());
 
 // API route that returns a URL and some text
 app.get('/api/info', (req, res) => {
+    // fetch other data
     res.json({
         url: 'https://example.com',
         text: 'This is some sample text.'

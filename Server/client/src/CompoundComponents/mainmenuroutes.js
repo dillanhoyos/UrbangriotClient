@@ -8,7 +8,9 @@ import Header from "../components/header";
 import Map from "../components/map";
 import Settings from "../components/settings";
 import ImageNavigation from "../components/gamemap";
-import  EuclideanSequencer from "../audiocomponents/EuclideanSequencer"
+import  EuclideanSequencer from "../audiocomponents/EuclideanSequencer_SliderVersion"
+import  EuclideanSequencer_List from "../audiocomponents/EuclideanSequencer_ListVersion"
+import LevelMap from "../components/map";
 import { Box } from "@mui/material";
 
 const campsData = [
@@ -70,7 +72,9 @@ const AppRoutes = ({ isDesktop, scannedUrl, handleScan, userdata }) => (
             }
           />
           <Route path="/scan" element={<QRScanner onScan={handleScan} />} />
-          <Route path="/sequencer" element={<EuclideanSequencer onScan={handleScan} />} />
+          <Route path="/sequencer" element={<EuclideanSequencer />} />
+          <Route path="/sequencer_list" element={<EuclideanSequencer_List/>} />
+          <Route path="/camp_map" element={<LevelMap />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/" element={<QRScanner onScan={handleScan} />} />
         </Routes>

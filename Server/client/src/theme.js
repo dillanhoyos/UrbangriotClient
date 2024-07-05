@@ -6,7 +6,7 @@ const theme = createTheme({
       main: '#333', // Indigo
     },
     secondary: {
-      main: '#f50057', // Pink
+      main: '#fff', // Pink
     },
     background: {
       default: '#f0f2f5', // Light Grey

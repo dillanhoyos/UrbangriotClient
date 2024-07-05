@@ -6,18 +6,17 @@ import { blue } from "@mui/material/colors";
 const EuclideanSequencer = () => {
   const [size, setSize] = useState(16); // Initial size for Euclidean rhythm
   const [elements, setElements] = useState(16); // Initial number of beats in Euclidean rhythm
-  const [sequence, setSequence] = useState([]); // State to store generated sequence
   const [rotationSteps, setRotationSteps] = useState(0); // State to store rotation steps
+  const [sequence, setSequence] = useState([]); // State to store generated sequence
   const [tempBPM, setTempBpm] = useState(120); // Initial BPM
   const [bpm, setBpm] = useState(120); // Initial BPM
   const [isPlaying, setIsPlaying] = useState(false); // Sequencer play state
   const [intervalId, setIntervalId] = useState(null); // ID for interval to clear later
-  const [conga, setConga] = useState(null); // State to hold the conga sampler
-  const currentBeatRef = useRef(0); // Ref to hold the current beat value
   const [audioBuffer, setaudiobuffer] = useState(null);
+  const lastElementRef = useRef(null);
+  const imageRefs = useRef([]); 
+  const currentBeatRef = useRef(0); // Ref to hold the current beat value
   const audioCtxRef = useRef(null);
-  const [notesInQueue, setNotesInQueue] = useState([]);
-  const [lastNoteDrawn, setLastNoteDrawn] = useState(0);
 
   // Function to handle size change
   const handleSizeChange = (event, newSize) => {
@@ -60,6 +59,7 @@ const EuclideanSequencer = () => {
     setRotationSteps(newRotationSteps);
     generateSequence(size, elements, newRotationSteps);
   };
+
   useEffect(() => {
     if (isPlaying) {
       clearTimeout(intervalId);
@@ -83,6 +83,11 @@ const EuclideanSequencer = () => {
     }
   }, [bpm]);
 
+  useEffect(() => {
+    // Initialize the refs array with null values for each sequence item
+    imageRefs.current = imageRefs.current.slice(0, size);
+  }, [size]);
+
   const lookahead = 25.0;
   const scheduleAheadTime = 0.2;
   let nextNoteTime = 0.0;
@@ -104,49 +109,47 @@ const EuclideanSequencer = () => {
   }, []);
 
   function scheduleNote(beatNumber, time) {
-    setNotesInQueue((prevNotes) => {
-      const updatedNotes = [...prevNotes, { note: beatNumber, time }];
-      return updatedNotes;
-    });
-
     if (sequence[beatNumber] === 1) {
       playSample(audioBuffer, time);
     }
+    setTimeout(draw, audioCtxRef.current.currentTime - time)
+  
   }
-  function draw() {
-    let drawNote = lastNoteDrawn;
-    const currentTime = audioCtxRef.current.currentTime;
-    while (notesInQueue[0] && notesInQueue[0].time < currentTime) {
-      drawNote = notesInQueue[0].note;
-      setNotesInQueue((prevNotes) => prevNotes.slice(1));
-    }
-    if(notesInQueue.length){
+  const draw = () => {
+    const element = imageRefs.current[(currentBeatRef.current - 1 + sequence.length) % sequence.length];
+    const lastElement = lastElementRef.current;
 
-      console.log(notesInQueue)
+    if (lastElement) {
+      lastElement.style.transition = "all 0.1s ease-in-out"; // Add transition
+      lastElement.style.backgroundColor = "white"; // Reset background color
+      lastElement.style.width = "80%"; // Reset size
+      lastElement.style.height = "80%"; // Reset size
+      lastElement.style.border = "none"; // Reset border
     }
     
-    if (lastNoteDrawn !== drawNote) {
-      // Change style for currentBeatRef.current
-      let elements = document.getElementsByClassName(`image-class-1}`);
-      for (let i = 0; i < elements.length; i++) {
-        elements[i].style.color = "blue";
+    if (element) {
+      if(sequence[currentBeatRef.current-1]=== 1){
+          element.style.transition = "all 0.05s ease-in-out"; // Add transition
+          element.style.border = "2px blue"; // Reset border
+          element.style.width = "180%"; // Enlarge size
+          element.style.color = "yellow"; // Enlarge size
+          element.style.height = "180%"; // Enlarge size
+          
+          
+        } else{
+          
+          element.style.transition = "all 0.05s ease-in-out"; // Add transition
+          element.style.border = "none"; // Reset border
+          element.style.width = "120%"; // Enlarge size
+          element.style.height = "120%"; // Enlarge size
+        }
       }
+    
+    
 
-      // Change style for currentBeatRef.current - 1 (if applicable)
-      let previousIndex =
-        (currentBeatRef.current - 1 + elements.length) % elements.length;
-      let elementsPrevious = document.getElementsByClassName(
-        `image-class-${previousIndex}`
-      );
-      for (let i = 0; i < elementsPrevious.length; i++) {
-        elementsPrevious[i].style.color = "white";
-      }
-    }
-
-    setLastNoteDrawn(drawNote);
-    // Set up to draw again
-    requestAnimationFrame(draw);
-  }
+    // Update the last element reference
+    lastElementRef.current = element;
+  };
 
   function nextNote() {
     const secondsPerBeat = 60.0 / bpm;
@@ -159,7 +162,7 @@ const EuclideanSequencer = () => {
       scheduleNote(currentBeatRef.current, nextNoteTime);
       nextNote();
     }
-
+    clearInterval(intervalId)
     const newIntervalId = setTimeout(scheduler, lookahead);
     setIntervalId(newIntervalId);
   };
@@ -180,15 +183,14 @@ const EuclideanSequencer = () => {
       if (audioCtxRef.current.state === "suspended") {
         audioCtxRef.current.resume();
       }
+      clearTimeout(intervalId);
       generateSequence(size, elements, rotationSteps);
       currentBeatRef.current = 0;
       nextNoteTime = audioCtxRef.current.currentTime + lookahead;
       scheduler();
-      requestAnimationFrame(draw);
     } else {
       clearTimeout(intervalId);
-      setNotesInQueue([]); // Reset notesInQueue when stopping
-      setLastNoteDrawn(3); // Reset lastNoteDrawn when stopping
+      setIntervalId(null);
     }
   }, [isPlaying]);
 
@@ -210,9 +212,9 @@ const EuclideanSequencer = () => {
   const getImageForSequence = (value) => {
     switch (value) {
       case 1:
-        return "musicalNotation/sixteenNote.jpg";
+        return "/musicalNotation/sixteenNote.jpg";
       case 0:
-        return "musicalNotation/sixteenNoteSilence.jpg";
+        return "/musicalNotation/sixteenNoteSilence.jpg";
       default:
         return "/path/to/default.png";
     }
@@ -223,8 +225,7 @@ const EuclideanSequencer = () => {
         audioCtxRef.current.close();
       }
       clearTimeout(intervalId);
-      setNotesInQueue([]); // Reset notesInQueue when stopping
-      setLastNoteDrawn(3); // Reset lastNoteDrawn when stopping
+      setIntervalId(null)
     };
   }, []);
 
@@ -324,6 +325,7 @@ const EuclideanSequencer = () => {
                   height: "100%",
                   objectFit: "contain",
                 }}
+                ref={el => (imageRefs.current[index] = el)}
               />
             </div>
           ))}

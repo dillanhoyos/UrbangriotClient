@@ -34,14 +34,12 @@ function App() {
       {!onboardingComplete ? (
         <Onboarding onComplete={handleOnboardingComplete} />
       ) : (
-        
-              <AppRoutes
-                isDesktop={isDesktop}
-                scannedUrl={scannedUrl}
-                handleScan={handleScan}
-                userdata={userdata}
-              />
-         
+        <AppRoutes
+          isDesktop={isDesktop}
+          scannedUrl={scannedUrl}
+          handleScan={handleScan}
+          userdata={userdata}
+        />
       )}
     </Router>
   );
