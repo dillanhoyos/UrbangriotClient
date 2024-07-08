@@ -141,11 +141,11 @@ const LevelMap = () => {
   const renderActivityCircle = (activity, index, totalActivities) => {
     const circleSize = 100;
     const verticalSpacing = 120;
-    const zigzagOffset = 160;
+    const zigzagOffset = 120;
   
     const isEvenIndex = index % 2 === 0;
     const top = index * verticalSpacing;
-    let left = isEvenIndex ? 40 : zigzagOffset;
+    let left = isEvenIndex ? 0 : zigzagOffset;
   
     return (
       <Box
@@ -170,7 +170,7 @@ const LevelMap = () => {
             width: '100%',
             height: '100%',
             borderRadius: '50%',
-            backgroundColor: 'rgba(128, 128, 128, 0.8)',
+            backgroundColor: theme.palette.primary.main,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
