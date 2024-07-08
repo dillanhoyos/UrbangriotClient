@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const { loadModel } = require('./wordEmbeddings');
+const { getRhythmForWord, getWordsForRhythm } = require('./Crypto_Glove/rhythm_mapper.js');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,6 +20,17 @@ app.get('/api/info', (req, res) => {
     });
 });
 
+app.get('/word-to-rhythm/:word', async (req, res) => {
+  const rhythm = await getRhythmForWord(req.params.word);
+  res.json({ rhythm });
+});
+
+app.post('/rhythm-to-words', async (req, res) => {
+  const words = await getWordsForRhythm(req.body.rhythm);
+  res.json({ words });
+});
+
+
 // Serve static assets if in production (from React build)
 
 app.use(express.static('client/build'));
@@ -28,4 +41,14 @@ app.get('*', (req, res) => {
 
 
 // Start server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+async function startServer() {
+    try {
+      await loadModel();
+      app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    } catch (error) {
+      console.error('Failed to start server:', error);
+    }
+  }
+  
+startServer();
