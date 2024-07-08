@@ -1,3 +1,5 @@
 Server/CMU/prosodic_word_data.jsonl filter=lfs diff=lfs merge=lfs -text
 Server/Crypto_Glove/word_data.jsonl filter=lfs diff=lfs merge=lfs -text
 Server/glove.6B.100d.txt filter=lfs diff=lfs merge=lfs -text
+*.jsonl filter=lfs diff=lfs merge=lfs -text
+*.txt filter=lfs diff=lfs merge=lfs -text
