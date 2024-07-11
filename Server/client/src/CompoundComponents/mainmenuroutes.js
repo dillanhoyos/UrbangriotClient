@@ -10,7 +10,8 @@ import Settings from "../components/settings";
 import ImageNavigation from "../components/gamemap";
 import  EuclideanSequencer from "../audiocomponents/EuclideanSequencer_SliderVersion"
 import  EuclideanSequencer_List from "../audiocomponents/EuclideanSequencer_ListVersion"
-import  AlphariddimsSequencer from "../audiocomponents/AlphariddimsSequencer"
+import  AlphariddimsSequencer from "../audiocomponents/AlphariddimsSequencerList"
+import  AlphariddimsSequencerButtons from "../audiocomponents/AlphariddimsSequencerButtons"
 import LevelMap from "../components/map";
 import { Box } from "@mui/material";
 
@@ -76,6 +77,7 @@ const AppRoutes = ({ isDesktop, scannedUrl, handleScan, userdata }) => (
           <Route path="/sequencer" element={<EuclideanSequencer />} />
           <Route path="/sequencer_list" element={<EuclideanSequencer_List/>} />
           <Route path="/Alphariddims" element={<AlphariddimsSequencer/>} />
+          <Route path="/AlphariddimsButtons" element={<AlphariddimsSequencerButtons/>} />
           <Route path="/camp_map" element={<LevelMap />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/" element={<QRScanner onScan={handleScan} />} />

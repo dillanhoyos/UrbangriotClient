@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Grid, Typography, Button, Select, MenuItem } from "@mui/material";
 import { generator, rotatearray, Alphacode } from "../utils/euclidean";
 import RhythmPlayback from "./RhythmicPlayback"; // Ensure you import the RhythmPlayback component correctly
-import AlphariddimsVisualizer from "../visualcomponents/AlphariddimsVisualizer"; // Import the new component
+import AlphariddimsVisualizerCircle from "../visualcomponents/AlphariddimsVisualizerCircle"; // Import the new component
 
 const sequences = {
   A: {
@@ -166,12 +166,14 @@ const sequences = {
   // Add more sequences as needed
 };
 
-const AlphariddimsSequencer = () => {
+const AlphariddimsSequencerButtons = () => {
   const [sequence, setSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [bpm, setBpm] = useState(120);
   const [selectedSequence, setSelectedSequence] = useState(0);
   const [currentBeat, setCurrentBeat] = useState(0);
+  const [loop, setLoop] = useState([])
+  const [letter, setLetter] = useState("")
 
   const currentBeatRef = useRef(0);
 
@@ -194,8 +196,8 @@ const AlphariddimsSequencer = () => {
     }
   }, [isPlaying, selectedSequence]);
 
-  const handleSequenceChange = (event) => {
-    const selectedKey = event.target.value;
+  const handleSequenceChange = (value) => {
+    const selectedKey = value;
     setSelectedSequence(selectedKey);
     generateSequence(
       sequences[selectedKey].pattern,
@@ -203,12 +205,22 @@ const AlphariddimsSequencer = () => {
       sequences[selectedKey].alphariddim
     );
     setBpm(sequences[selectedKey].bpm);
+    setLetter(selectedKey)
+    if(loop){
+      setIsPlaying(false);
+    }
     setIsPlaying(false);
   };
   
 
   const onCurrentBeatChange = (currentBeat) => {
     setCurrentBeat(currentBeat);
+  };
+  const onfinishsequence = () => {
+    setIsPlaying(false)
+  }
+  const handleToggle = () => {
+    setLoop((prev) => !prev);
   };
   // Initial generation of the default sequence when component mounts
   useEffect(() => {
@@ -218,8 +230,13 @@ const AlphariddimsSequencer = () => {
       sequences["A"].alphariddim
     );
     setBpm(sequences["A"].bpm);
+    setLetter("A")
     setSelectedSequence("A")
   }, []); // Empty dependency array ensures this effect runs only once on mount
+  useEffect(() => {
+   console.log(loop)
+   console.log(isPlaying)
+  }, [isPlaying]); // Empty dependency array ensures this effect runs only once on mount
 
 
   return (
@@ -235,37 +252,44 @@ const AlphariddimsSequencer = () => {
         >
           {isPlaying ? "Stop Sequencer" : "Start Sequencer"}
         </Button>
+        <Button
+          variant="contained"
+          color={isPlaying ? "secondary" : "primary"}
+          onClick={handleToggle}
+        >
+          {loop ? "Loop" : "OneShot"}
+        </Button>
       </Grid>
       <Grid item xs={12}>
-        <Select
-          value={selectedSequence}
-          onChange={handleSequenceChange}
-          style={{ minWidth: 150 }}
-        >
-          {Object.keys(sequences).map((key) => (
-            <MenuItem key={key} value={key}>
+        {Object.keys(sequences).map((key) => (
+            <Button
+              key={key}
+              variant={selectedSequence === key ? "contained" : "outlined"}
+              onClick={() => handleSequenceChange(key)}
+            >
               {key}
-            </MenuItem>
+            </Button>
           ))}
-        </Select>
       </Grid>
       <Grid item xs={12}>
         <Typography variant="body1">Generated Sequence:</Typography>
-        <AlphariddimsVisualizer sequence={sequence} currentBeat={currentBeat} />
+        <AlphariddimsVisualizerCircle sequence={sequence} letter={letter} currentBeat={currentBeat} />
       </Grid>
       <RhythmPlayback
         sequence={sequence}
         bpm={bpm}
         isPlaying={isPlaying}
         onCurrentBeatChange={onCurrentBeatChange}
+        reset_playback={onfinishsequence}
         sampleUrls={[
           "/audio/Conga/SO_AFR_conga_high.wav",
           "/audio/Conga/SO_AFR_conga_slap_closed.wav",
           "/audio/Conga/SO_AFR_conga_low.wav",
         ]} // Pass the sample URL as a prop
+        loop={loop}
       />
     </Grid>
   );
 };
 
-export default AlphariddimsSequencer;
+export default AlphariddimsSequencerButtons;

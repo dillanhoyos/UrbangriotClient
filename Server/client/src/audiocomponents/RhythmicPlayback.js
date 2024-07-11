@@ -6,6 +6,8 @@ const RhythmPlayback = ({
   isPlaying,
   sampleUrls,
   onCurrentBeatChange,
+  reset_playback=null,
+  loop=true,
 }) => {
   const [audioBuffers, setAudioBuffers] = useState([]);
   const [buffersLoaded, setBuffersLoaded] = useState(false);
@@ -40,7 +42,7 @@ const RhythmPlayback = ({
           return await audioCtxRef.current.decodeAudioData(arrayBuffer);
         })
       );
-      setAudioBuffers(prev => [0, ...prev, ...buffers]);
+      setAudioBuffers((prev) => [0, ...prev, ...buffers]);
       setBuffersLoaded(true); // Mark buffers as loaded
     } catch (error) {
       console.error("Error loading audio buffers:", error);
@@ -56,14 +58,27 @@ const RhythmPlayback = ({
 
     setTimeout(
       onCurrentBeatChange(currentBeatRef.current),
-      audioCtxRef.current.currentTime - time *2
+      audioCtxRef.current.currentTime - time * 2
     );
   };
 
   const nextNote = () => {
     const secondsPerBeat = 60.0 / bpm;
     nextNoteTime += secondsPerBeat / 4;
-    currentBeatRef.current = (currentBeatRef.current + 1) % sequence.length;
+    if (currentBeatRef.current + 1 >= sequence.length) {
+      if (!loop) {
+        // Stop playback
+        clearTimeout(intervalId);
+        reset_playback()
+        setIntervalId(null);
+        return;
+      } else {
+        // Loop the sequence
+        currentBeatRef.current = 0;
+      }
+    } else {
+      currentBeatRef.current = (currentBeatRef.current + 1) % sequence.length;
+    }
   };
 
   const scheduler = () => {

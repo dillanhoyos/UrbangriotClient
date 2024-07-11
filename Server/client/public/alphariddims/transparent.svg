@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1366 768" enable-background="new 0 0 1366 768" xml:space="preserve">
+<g id="Layer_1">
+	<g display="none">
+		<path fill="#231F20" d="M228.67,366.76c2.12,0,4.24,0,6.36,0c2.11,0,4.23,0,6.34,0c243.44,0,486.87,0,730.31,0
+			c2.12,0,4.23,0,6.35,0s4.23,0,6.35,0"/>
+	</g>
+	<line display="none" fill="none" x1="230.35" y1="240.29" x2="721.91" y2="731.85"/>
+	<line display="none" fill="none" x1="1130.67" y1="245.85" x2="639.11" y2="737.42"/>
+	<polygon display="none" fill="#231F20" points="715.51,388.39 947.65,388.39 943.72,391.46 719.45,391.46 	"/>
+	<polygon display="none" fill="#231F20" points="646.55,391.46 422.28,391.46 418.35,388.39 650.49,388.39 	"/>
+	<circle display="none" fill="#231F20" cx="683" cy="384.78" r="9.34"/>
+	<g display="none">
+		<defs>
+			<rect id="SVGID_1_" x="-47.18" y="270" width="1427.78" height="259.49"/>
+		</defs>
+		<clipPath id="SVGID_2_" display="inline">
+			<use xlink:href="#SVGID_1_"  overflow="visible"/>
+		</clipPath>
+		
+			<line display="inline" clip-path="url(#SVGID_2_)" fill="none" stroke="#231F20" stroke-width="14" stroke-linecap="square" stroke-miterlimit="10" stroke-dasharray="25,0,0" x1="390.13" y1="384" x2="975.87" y2="384"/>
+	</g>
+	
+		<line fill="none" stroke="#231F20" stroke-width="10" stroke-linecap="round" stroke-miterlimit="10" stroke-dasharray="19,0,0" x1="83" y1="384" x2="1283" y2="384"/>
+</g>
+<g id="Layer_2">
+</g>
+</svg>
