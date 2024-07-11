@@ -1,7 +1,7 @@
 // euclidean.js
 
 // Function to generate Euclidean rhythm
-export const generator = (n, b) => {
+export const generator = (n, b, call=false) => {
     if (n < b) {
       return [0]; // Handle edge case where more beats than size
     }
@@ -27,7 +27,11 @@ export const generator = (n, b) => {
       }
       return euclidRecursive(newArray, [...front, ...back]);
     }
-  
+    if(call){
+      const response = front.map(value => value + 5);
+      return [].concat(front, response);
+
+    }
     return front; // Return the final computed array
   };
   
@@ -54,4 +58,29 @@ export const generator = (n, b) => {
   
     return array.slice(); // Return a new array to trigger state update
   };
+
+
+  export const Alphacode = (array, sequence) => {
+    let j = 0;
+    const resultArray = [...array]; // Create a copy of the input array
+  
+    if (!Array.isArray(sequence)) {
+      console.error('Sequence is not an array:', sequence);
+      return resultArray; // Return the original array if sequence is not an array
+    }
+  
+    for (let i = 0; i < resultArray.length; i++) {
+      if (resultArray[i] === 1) {
+        if (j < sequence.length) {
+          resultArray[i] = sequence[j];
+          j++;
+        } else {
+          break;
+        }
+      }
+    }
+  
+    return resultArray;
+  };
+  
   
